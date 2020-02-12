@@ -7,9 +7,9 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - First Release: 2020.02.12.
 
 ## _Contributors_
-Seonghyeon Boris Moon (blank54@snu.ac.kr, https://github.com/blank54/)
-Gitaek Lee (lgt0427@snu.ac.kr)
-Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
+- Seonghyeon Boris Moon (blank54@snu.ac.kr, https://github.com/blank54/)
+- Gitaek Lee (lgt0427@snu.ac.kr)
+- Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
 
 - - -
 
