@@ -46,11 +46,11 @@ for idx, doc in enumerate(docs):
 >Sourcecode: _/test/word_network.py_
 
 A customized class _**WordNetwork**_ was developed to facilitate the usage of the python library _**networkx**_.
-The default settings are
+\nThe default settings are
 - word combination weighting based on the _**distance**_ within the sentence
 - top _**50 words**_ to be shown in the network
 - save the network with filename _**'tmp_word_network.png'**_ in directory _**'./result/word_network/'**_.
-The user can customize the settings by _**config**_. See _visualize.py/WordNetwork_ for detail options.
+\nThe user can customize the settings by _**config**_. See _visualize.py/WordNetwork_ for detail options.
 
 ```python
 import os
