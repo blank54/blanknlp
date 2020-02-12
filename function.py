@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# Configuration
 import os
 import re
 import nltk
@@ -11,7 +13,6 @@ from config import Config
 with open('/data/blank54/workspace/blanknlp/custom.cfg', 'r') as f:
     cfg = Config(f)
 
-# Configuration
 def makedir(path):
     if path.endswith('/'):
         os.makedirs(path, exist_ok=True)

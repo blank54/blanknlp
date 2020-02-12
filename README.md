@@ -43,7 +43,7 @@ for idx, doc in enumerate(docs):
 - - -
 
 ## Word Network
->Sourcecode: _/test/word_network.py_
+>Sourcecode: _/test/run_word_network.py_
 
 A customized class _**WordNetwork**_ was developed to facilitate the usage of the python library _**networkx**_.
 
@@ -67,6 +67,7 @@ word_network = WordNetwork(**wn_config)
 ```
 
 Just _**.network()**_ to draw a word network.
+
 ```python
 word_network.network()
 ```
