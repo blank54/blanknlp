@@ -46,7 +46,11 @@ for idx, doc in enumerate(docs):
 >Sourcecode: _/test/word_network.py_
 
 A customized class _**WordNetwork**_ was developed to facilitate the usage of the python library _**networkx**_.
-The default setting is _count_option=='dist'_, _save_plt==True_, and _show_plt==True_. The user can customize the setting by _**config**_.
+The default settings are
+- word combination weighting based on the _**distance**_ within the sentence
+- top _**50 words**_ to be shown in the network
+- save the network with filename _**'tmp_word_network.png'**_ in directory _**'./result/word_network/'**_.
+The user can customize the settings by _**config**_. See _visualize.py/WordNetwork_ for detail options.
 
 ```python
 import os
@@ -54,7 +58,13 @@ from visualize import *
 
 wn_config = {
     'docs': docs,
-    'save_plt': save_plt
+    'top_n': 100,
+    'fname_plt': './result/my_network.png'
 }
 word_network = WordNetwork(**wn_config)
+```
+
+Just _**.network()**_ to draw a word network.
+```python
+word_network.network()
 ```
