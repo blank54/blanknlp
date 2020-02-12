@@ -3,7 +3,6 @@
 
 # Configuration
 import os
-import time
 import pickle as pk
 
 from config import Config
