@@ -57,9 +57,6 @@ class Article:
         self.comment_list = kwargs.get('comment_list', 'none')
         self.comment_count = kwargs.get('comment_count', 0)
 
-    def __call__(self):
-        return (self.id, self.url)
-
     def __str__(self):
         return '{}: {}'.format(self.id, self.url)
 
