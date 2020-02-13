@@ -43,7 +43,7 @@ for idx, doc in enumerate(docs):
 - - -
 ## Web Crawling
 >Sourcecode:
->>_web_crawling.py_
+>>_web_crawling.py_  
 >>_/test/run_web_crawling.py_
 
 A customized class _**NewsCrawler**_ to facilitate the process of web crawling from naver news. Mainly refer to _**urllib**_ and _**BeautifulSoup**_.
