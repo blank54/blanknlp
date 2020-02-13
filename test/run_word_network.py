@@ -3,10 +3,13 @@
 
 # Configuration
 import os
+abspath = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
+
 import pickle as pk
 
 from config import Config
-with open('./custom.cfg', 'r') as f:
+with open(os.path.join(config_path, 'custom.cfg'), 'r') as f:
     cfg = Config(f)
 
 import sys

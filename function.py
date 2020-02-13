@@ -3,7 +3,7 @@
 
 # Configuration
 import os
-installpath = os.path.sep.join(os.path.dirname(os.path.realpath(__file__)).split(os.path.sep)[:-1])
+abspath = os.path.dirname(os.path.abspath(__file__))
 
 import re
 import pickle as pk
@@ -15,7 +15,7 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 
 from config import Config
-with open('{}/custom.cfg'.format(installpath), 'r') as f:
+with open(os.path.join(abspath, 'custom.cfg'), 'r') as f:
     cfg = Config(f)
 
 def makedir(path):
