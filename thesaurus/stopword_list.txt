@@ -6,3 +6,5 @@ be
 is
 of
 the
+// flash 오류를 우회하기 위한 함수 추가
+function _flash_removeCallback() {}
