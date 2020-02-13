@@ -4,6 +4,9 @@
 # Configuration
 import os
 import re
+import pickle as pk
+import pandas as pd
+
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
@@ -28,16 +31,22 @@ def save_df2excel(data, fname, verbose=False):
     if verbose:
         print("Saved data as: {}".format(fname))
 
+def flist_archive(fdir):
+    flist = []
+    for (path, _, files) in os.walk(fdir):
+        flist.extend([os.path.join(path, file) for file in files if file.endswith('.pk')])
+    return flist
+
 class Preprocess:
     def __init__(self, **kwargs):
         nltk.download('wordnet', quiet=True)
         self.stemmer = LancasterStemmer()
         self.lemmatizer = WordNetLemmatizer()
         
-        self.do_marking = kwargs.get('do_marking', True)
-        self.do_synonym = kwargs.get('do_synonym', True)
-        self.do_lower = kwargs.get('do_lower', True)
-        self.do_stop = kwargs.get('do_stop', True)
+        self.do_marking = kwargs.get('do_marking', False)
+        self.do_synonym = kwargs.get('do_synonym', False)
+        self.do_lower = kwargs.get('do_lower', False)
+        self.do_stop = kwargs.get('do_stop', False)
 
         self.fname_synonym_list = kwargs.get('fname_synonym_list', os.path.join(cfg.root, cfg.fname_synonym_list))
         self.fname_stopword_list = kwargs.get('fname_stopword_list', os.path.join(cfg.root, cfg.fname_stopword_list))
