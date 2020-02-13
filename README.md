@@ -1,5 +1,5 @@
 # blanknlp
-A bunch of python codes to analyze text data in the construction industry.
+A bunch of python codes to analyze text data in the construction industry.  
 Mainly reconstitute the pre-exist python libraries for TM and NLP.
 
 ## _Project Information_
@@ -14,7 +14,7 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - - -
 
 ## Data
-We provide some pickled data for tutorial.
+We provide some pickled data for tutorial.  
 The users can reach it as below.
 
 ```python
@@ -26,7 +26,7 @@ with open(fname_docs_sample, 'rb') as f:
     docs = pk.load(f)
 ```
 
-The _**docs**_ contains 58 documents.
+The _**docs**_ contains 58 documents.  
 Each _**doc**_ consists of 100 words with several stopwords removed.
 
 ```python
@@ -46,11 +46,11 @@ for idx, doc in enumerate(docs):
 >>_web_crawling.py_  
 >>_/test/run_web_crawling.py_
 
-A customized class _**NewsCrawler**_ to facilitate the process of web crawling from naver news. Mainly refer to _**urllib**_ and _**BeautifulSoup**_.
->https://docs.python.org/3/library/urllib.html
+A customized class _**NewsCrawler**_ to facilitate the process of web crawling from naver news.  Mainly refer to _**urllib**_ and _**BeautifulSoup**_.
+>https://docs.python.org/3/library/urllib.html  
 >https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
-Note that the **Naver News** platform only provides **4,000 articles** per query.
+Note that the **Naver News** platform only provides **4,000 articles** per query.  
 The dafault settings of the web crawler are
 - **3 seconds** sleep after parsing a url page
 - sampling **100** articles from list page if _**do_sampling**_ is _**True**_
@@ -84,7 +84,9 @@ crawling_config = {
 news_crawler = NewsCrawler(**crawling_config)
 ```
 
-Run _**NewsCrwaler**_. The crawling process consists of two stages: parse_list_page(_**.get_url_list()**_) and parse_article_page(_**.get_articles**_). Finally, the crawler parses **url**, **title**, **date**, **category**, **content**, and **comments** from the articles.
+Run _**NewsCrwaler**_.  
+The crawling process consists of two stages: parse_list_page(_**.get_url_list()**_) and parse_article_page(_**.get_articles**_).  
+Finally, the crawler parses **url**, **title**, **date**, **category**, **content**, and **comments** from the articles.
 
 ```python
 # Run Crawling
@@ -92,13 +94,14 @@ news_crawler.get_url_list() ## returns list of url_list_page
 news_crawler.get_articles() ## returns list of articles
 ```
 
-As default, the user can get the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_. Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.
+As default, the user can get the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_.  
+Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.
 
 - - -
 
 ## Word Network
 >Sourcecode:
->>_visualize.py_
+>>_visualize.py_  
 >>_/test/run_word_network.py_
 
 A customized class _**WordNetwork**_ to facilitate the usage of the python library _**networkx**_.
@@ -133,11 +136,12 @@ word_network.network()
 
 ## Text Embedding
 >Sourcecode:
->>_embedding.py_
+>>_embedding.py_  
 >>_/test/run_embedding.py_
 
 ### TF-IDF
-Term Frequency-Inverse Document Frequency (TF-IDF), One of the most simple and general text embedding techniques is provided. We utilized _**TfidfVectorizer**_ from _**sklearn**_ library.
+Term Frequency-Inverse Document Frequency (TF-IDF), One of the most simple and general text embedding techniques is provided.  
+We utilized _**TfidfVectorizer**_ from _**sklearn**_ library.
 >https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer
 
 Import related libraries.
@@ -156,7 +160,8 @@ from function import makedir
 from embedding import embedding_tfidf, embedding_doc2vec
 ```
 
-The TF-IDF embedding model requires _**tagged_docs**_, of which format is **list of tuple(id, doc)**. Note that a _**doc**_ is a **list of word** (i.e., [w1, w2, ...]).
+The TF-IDF embedding model requires _**tagged_docs**_, of which format is **list of tuple(id, doc)**.  
+Note that a _**doc**_ is a **list of word** (i.e., [w1, w2, ...]).
 ```python
 # Data Import
 with open(FNAME_DOCS, 'rb') as f:
@@ -183,7 +188,7 @@ with open(FNAME_TFIDF_MODEL, 'wb') as f:
     pk.dump(tfidf_model, f)
 ```
 
-The user can utilize the TF-IDF results as below.
+The user can utilize the TF-IDF results as below.  
 The sample code assumed that the user needs the tfidf vector of **document id 7**.
 
 ```python
