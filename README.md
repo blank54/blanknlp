@@ -12,6 +12,15 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
 
 - - -
+## Initialization
+Modify _**root**_ of the _**custom.cfg**_ to your _root directory_ of the project.
+
+```python
+# Root
+root: 'YOUR_ROOT_DIRECTORY' # '/data/blank54/workspace/my_project/'
+```
+
+- - -
 
 ## Data
 We provide some pickled data for tutorial.  
@@ -21,7 +30,7 @@ The users can reach it as below.
 import os
 import pickle as pk
 
-fname_docs_sample = './data/sample.pk'
+fname_docs_sample = './blanknlp/data/sample.pk'
 with open(fname_docs_sample, 'rb') as f:
     docs = pk.load(f)
 ```

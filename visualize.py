@@ -3,6 +3,8 @@
 
 # Configuration
 import os
+installpath = os.path.sep.join(os.path.dirname(os.path.realpath(__file__)).split(os.path.sep)[:-1])
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -15,7 +17,7 @@ import matplotlib.font_manager as fm
 matplotlib.rc('font', family='NanumBarunGothic')
 
 from config import Config
-with open('./custom.cfg', 'r') as f:
+with open('{}/custom.cfg'.format(installpath), 'r') as f:
     cfg = Config(f)
 
 from function import *

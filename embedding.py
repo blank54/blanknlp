@@ -3,6 +3,7 @@
 
 # Configuration
 import os
+installpath = os.path.sep.join(os.path.dirname(os.path.realpath(__file__)).split(os.path.sep)[:-1])
 
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
@@ -10,7 +11,7 @@ from gensim.models.doc2vec import TaggedDocument
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from config import Config
-with open('./custom.cfg', 'r') as f:
+with open('{}/custom.cfg'.format(installpath), 'r') as f:
     cfg = Config(f)
 
 import sys

@@ -3,6 +3,8 @@
 
 # Configuration
 import os
+installpath = os.path.sep.join(os.path.dirname(os.path.realpath(__file__)).split(os.path.sep)[:-1])
+
 import re
 import time
 import random
@@ -19,7 +21,7 @@ from tqdm import tqdm, tqdm_notebook
 from datetime import datetime, timedelta
 
 from config import Config
-with open('./custom.cfg', 'r') as f:
+with open('{}/custom.cfg'.format(installpath), 'r') as f:
     cfg = Config(f)
 
 import sys
