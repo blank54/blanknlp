@@ -12,12 +12,15 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
 
 - - -
-## Initialization
-Modify _**root**_ of the _**custom.cfg**_ to your _root directory_ of the project.
+## Initialization (IMPORTANT)
+Modify _**custom.cfg**_ before use _**blanknlp**_.  
+- _**root**_ is your root directory for the current project.  
+- _**blanknlp**_ is the directory where the _**blanknlp**_ package installed.
 
 ```python
-# Root
-root: 'YOUR_ROOT_DIRECTORY' # '/data/blank54/workspace/my_project/'
+# Directory
+root: 'YOUR_ROOT_DIRECTORY' # '/data/blank54/workspace/my_project'
+blanknlp: 'FDIR_OF_PACKAGE' # '/data/blank54/workspace/my_project/blanknlp/'
 ```
 
 - - -
@@ -50,6 +53,7 @@ for idx, doc in enumerate(docs):
 ```
 
 - - -
+
 ## Web Crawling
 >Sourcecode:
 >>_web_crawling.py_  
@@ -68,11 +72,11 @@ Import related libraries
 ```python
 # Configuration
 from config import Config
-with open(FNAME_YOUR_CRAWLING_CONFIG, 'r') as f:
+with open(FNAME_CUSTOM_CONFIG, 'r') as f: # './blanknlp/custom.cfg'
     cfg = Config(f)
 
 import sys
-sys.path.append(cfg.root)
+sys.path.append(cfg.blanknlp)
 from web_crawling import NewsCrawler
 ```
 
@@ -125,11 +129,11 @@ The user can customize the settings via _**config**_. See _visualize.py/WordNetw
 
 ```python
 from config import Config
-with open(FNAME_YOUR_CRAWLING_CONFIG, 'r') as f:
+with open(FNAME_CUSTOM_CONFIG, 'r') as f:
     cfg = Config(f)
 
 import sys
-sys.path.append(cfg.root)
+sys.path.append(cfg.blanknlp)
 from visualize import WordNetwork
 
 wn_config = {
@@ -163,11 +167,11 @@ Import related libraries.
 ```python
 # Configuration
 from config import Config
-with open(FNAME_YOUR_CRAWLING_CONFIG, 'r') as f:
+with open(FNAME_CUSTOM_CONFIG, 'r') as f:
     cfg = Config(f)
 
 import sys
-sys.path.append(cfg.root)
+sys.path.append(cfg.blanknlp)
 from function import makedir
 from embedding import embedding_tfidf
 ```
