@@ -76,14 +76,14 @@ class Preprocess:
         return stop_list
 
     def cleaning(self, text):
-        text = re.sub('[^ \'-\./0-9a-zA-Z\n]', '', text)
+        text = re.sub('[^ \'-\./0-9a-zA-Zㄱ-힣\n]', '', text)
 
         text = text.replace('\x0c', '')
         text = re.sub('\.+\.', ' ', text)
         text = text.replace('\\\\', '\\').replace('\\r\\n', '')
 
         text = text.replace('\n', ' ')
-        text = re.sub('\.(?=[A-Z])', '. ', text)
+        text = re.sub('\.(?=[A-Zㄱ-힣])', '. ', text)
         text = re.sub('\. ', '  ', text)
         text = re.sub('\s+\s', '  ', text).strip()
         return text
