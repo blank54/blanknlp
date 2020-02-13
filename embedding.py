@@ -10,7 +10,7 @@ from gensim.models.doc2vec import TaggedDocument
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from config import Config
-with open('/data/blank54/workspace/blanknlp/custom.cfg', 'r') as f:
+with open('./custom.cfg', 'r') as f:
     cfg = Config(f)
 
 import sys

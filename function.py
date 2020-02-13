@@ -13,7 +13,7 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 
 from config import Config
-with open('/data/blank54/workspace/blanknlp/custom.cfg', 'r') as f:
+with open('./custom.cfg', 'r') as f:
     cfg = Config(f)
 
 def makedir(path):

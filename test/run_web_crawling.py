@@ -3,7 +3,7 @@
 
 # Configuration
 from config import Config
-with open('/data/blank54/workspace/blanknlp/web_crawling.cfg', 'r') as f:
+with open('./custom.cfg', 'r') as f:
     cfg = Config(f)
 
 import sys

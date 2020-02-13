@@ -15,7 +15,7 @@ import matplotlib.font_manager as fm
 matplotlib.rc('font', family='NanumBarunGothic')
 
 from config import Config
-with open('/data/blank54/workspace/blanknlp/custom.cfg', 'r') as f:
+with open('./custom.cfg', 'r') as f:
     cfg = Config(f)
 
 from function import *

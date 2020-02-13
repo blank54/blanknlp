@@ -133,5 +133,6 @@ dmypy.json
 *.bin
 *.html
 *.png
-*.txt
 tmp*.py
+data/news/
+data/specification/

@@ -115,8 +115,13 @@ The default settings are
 The user can customize the settings via _**config**_. See _visualize.py/WordNetwork_ for detail options.
 
 ```python
-import os
-from visualize import *
+from config import Config
+with open(FNAME_YOUR_CRAWLING_CONFIG, 'r') as f:
+    cfg = Config(f)
+
+import sys
+sys.path.append(cfg.root)
+from visualize import WordNetwork
 
 wn_config = {
     'docs': docs,
@@ -148,16 +153,14 @@ Import related libraries.
 
 ```python
 # Configuration
-import os
-
 from config import Config
-with open(FNAME_YOUR_EMBEDDING_CONFIG, 'r') as f:
+with open(FNAME_YOUR_CRAWLING_CONFIG, 'r') as f:
     cfg = Config(f)
 
 import sys
 sys.path.append(cfg.root)
 from function import makedir
-from embedding import embedding_tfidf, embedding_doc2vec
+from embedding import embedding_tfidf
 ```
 
 The TF-IDF embedding model requires _**tagged_docs**_, of which format is **list of tuple(id, doc)**.  
