@@ -50,8 +50,8 @@ class Preprocess:
         self.do_lower = kwargs.get('do_lower', False)
         self.do_stop = kwargs.get('do_stop', False)
 
-        self.fname_synonym_list = kwargs.get('fname_synonym_list', os.path.join(cfg.root, cfg.fname_synonym_list))
-        self.fname_stopword_list = kwargs.get('fname_stopword_list', os.path.join(cfg.root, cfg.fname_stopword_list))
+        self.fname_synonym_list = kwargs.get('fname_synonym_list', os.path.join(cfg.origin, cfg.fname_synonym_list))
+        self.fname_stopword_list = kwargs.get('fname_stopword_list', os.path.join(cfg.origin, cfg.fname_stopword_list))
 
         self.synonym_rule = self.__read_synonym_rule()
         self.stop_list = self.__read_stop_list()
