@@ -6,7 +6,7 @@ import os
 import pickle as pk
 
 from config import Config
-with open('/data/blank54/workspace/blanknlp/custom.cfg', 'r') as f:
+with open('/data/blank54/workspace/blanknlp/embedding.cfg', 'r') as f:
     cfg = Config(f)
 
 import sys

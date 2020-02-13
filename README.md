@@ -84,8 +84,8 @@ crawling_config = {
 news_crawler = NewsCrawler(**crawling_config)
 ```
 
-Run _**NewsCrwaler**_.  
-The crawling process consists of two stages: parse_list_page(_**.get_url_list()**_) and parse_article_page(_**.get_articles**_).  
+Run _**NewsCrawler**_.  
+The crawling process consists of two stages: parse_list_page(_**.get_url_list()**_) and parse_article_page(_**.get_articles()**_).  
 Finally, the crawler parses **url**, **title**, **date**, **category**, **content**, and **comments** from the articles.
 
 ```python
