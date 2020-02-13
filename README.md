@@ -79,7 +79,7 @@ word_network.network()
 
 ### TF-IDF
 Term Frequency-Inverse Document Frequency (TF-IDF), One of the most simple and general text embedding techniques is provided. We utilized _**TfidfVectorizer**_ from _**sklearn**_ library.
->Refer to: https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer
+>https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer
 
 Import related libraries.
 
@@ -103,10 +103,10 @@ with open(FNAME_DOCS, 'rb') as f:
 tagged_docs = [(str(idx), ' '.join(doc)) for idx, doc in enumerate(docs)]
 ```
 
-Embedding TF-IDF and save the model. The TF-IDF model is composed of three items (i.e., id2idx, tfidf_matrix, tfidf_vocab).
-- id2idx: convert _**id of doc in tagged_docs**_ to _**row index of tfidf_matrix**_.
-- tfidf_matrix: a matrix of numeric value (i.e., TF-IDF) with row length of _**# of document**_ and column length of _**vocabulary size**_.
-- tfdif_vocab: a dictionary of vocabularies used in whole _**tagged_docs**_, which returns the _**column index of tfidf_matrix**_ of each term.
+Embedding TF-IDF and save the model. The TF-IDF model is composed of three items (i.e., _**id2idx**_, _**tfidf_matrix**_, _**tfidf_vocab**_).
+- **id2idx**: a dictionary that returns the _**row index of tfidf_matrix**_ of each _**id of doc**_ in _**tagged_docs**_.
+- **tfidf_matrix**: a matrix of numeric value (i.e., TF-IDF) with row length of _**# of document**_ and column length of _**vocabulary size**_.
+- **tfdif_vocab**: a dictionary of vocabularies used in whole _**tagged_docs**_, which returns the _**column index of tfidf_matrix**_ of each term.
 
 The user should keep these three items to utilize TF-IDF results.
 
