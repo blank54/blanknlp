@@ -4,6 +4,7 @@
 # Configuration
 import os
 abspath = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
 
 import numpy as np
 import pandas as pd
@@ -17,10 +18,10 @@ import matplotlib.font_manager as fm
 matplotlib.rc('font', family='NanumBarunGothic')
 
 from config import Config
-with open(os.path.join(abspath, 'custom.cfg'), 'r') as f:
+with open(os.path.join(config_path, 'custom.cfg'), 'r') as f:
     cfg = Config(f)
 
-from function import *
+from blanknlp.function import *
 
 class WordNetwork:
     def __init__(self, **kwargs):

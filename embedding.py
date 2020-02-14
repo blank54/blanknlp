@@ -4,6 +4,7 @@
 # Configuration
 import os
 abspath = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
 
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
@@ -11,12 +12,10 @@ from gensim.models.doc2vec import TaggedDocument
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from config import Config
-with open(os.path.join(abspath, 'custom.cfg'), 'r') as f:
+with open(os.path.join(config_path, 'custom.cfg'), 'r') as f:
     cfg = Config(f)
 
-import sys
-sys.path.append(cfg.root)
-from function import Preprocess
+from blanknlp.function import Preprocess
 
 pr_config = {
     'do_marking': False,

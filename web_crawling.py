@@ -4,6 +4,7 @@
 # Configuration
 import os
 abspath = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
 
 import re
 import time
@@ -21,12 +22,10 @@ from tqdm import tqdm, tqdm_notebook
 from datetime import datetime, timedelta
 
 from config import Config
-with open(os.path.join(abspath, 'custom.cfg'), 'r') as f:
+with open(os.path.join(config_path, 'custom.cfg'), 'r') as f:
     cfg = Config(f)
 
-import sys
-sys.path.append(cfg.root)
-from function import makedir, save_df2excel, flist_archive, Preprocess
+from blanknlp.function import makedir, save_df2excel, flist_archive, Preprocess
 pr = Preprocess()
 
 def get_url_uniq(url):
