@@ -31,7 +31,9 @@ pr = Preprocess()
 def get_url_uniq(url):
     return url.split('/')[-1]
 
-def read_articles(query, date_from, date_to):
+def read_articles(query, **kwargs):
+    date_from = kwargs.get('date_from', '0')
+    date_to = kwargs.get('date_to', '99999999')
     articles = []
     fdir_articles_query = os.path.join(cfg.root, cfg.fdir_news_corpus_articles, query)
     for article_date in [date for date in os.listdir(fdir_articles_query) if date_from <= date <= date_to]:

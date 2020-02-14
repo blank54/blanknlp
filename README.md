@@ -116,16 +116,21 @@ news_crawler.get_articles() ## Note: returns list of articles
 
 As default, the user can explore the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_.  
 Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.  
-Use the function _**read_articles()**_ to read the articles data.  
-It returns a list of _**Article**_. Then the user can use the attributes of each element such as _**url**_, _**title**_, _**date**_, _**content**_, _**comment_list**_.
-See _web_crawling.py/Article()_ for more information.  
-Note that the content of article commonly starts with a junk text such as _'// flash 오류를 우회하기 위한 함수 추가 function \_flash\_removeCallback() \{\}'_.
+Use the function _**read_articles()**_ to read the articles data, which returns a list of _**Article**_.  
+If the user wants every article regardless of its date, just input _**YOUR_QUERY**_ and the function would set the date as default value (0 to end).
 
 ```python
 from blanknlp.web_crawling import read_articles
 
-articles = read_articles(YOUR_QUERY, YOUR_DATE_FROM, YOUR_DATE_TO) # '교량+사고+유지관리', '20190701', '20190710'
+articles = read_articles(query=YOUR_QUERY, date_from=YOUR_DATE_FROM, date_to=YOUR_DATE_TO) # '교량+사고+유지관리', '20190701', '20190710'
+articles = read_articles(YOUR_QUERY)
+```
 
+Then the user can use the attributes of each element such as _**url**_, _**title**_, _**date**_, _**content**_, _**comment_list**_.
+See _web_crawling.py/Article()_ for more information.  
+Note that the content of article commonly starts with a junk text such as _'// flash 오류를 우회하기 위한 함수 추가 function \_flash\_removeCallback() \{\}'_.
+
+```python
 for article in articles[:3]:
     print('Title: {}'.format(article.title))
     print('Date: {}'.format(article.date))
