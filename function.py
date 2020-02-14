@@ -119,6 +119,7 @@ class Preprocess:
             words = self.marking(words)
         return words
 
+    ## TODO: remove phrase
     def stopword_removal(self, text):
         words = self.tokenize(text)
         return [w for w in words if w not in self.stop_list]
