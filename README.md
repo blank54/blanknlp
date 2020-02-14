@@ -124,12 +124,12 @@ Note that the content of article commonly starts with a junk text such as _'// f
 ```python
 from blanknlp.web_crawling import read_articles
 
-articles = read_articles(query, date_from, date_to) # '교량+사고+유지관리', '20190701', '20190710'
+articles = read_articles(YOUR_QUERY, YOUR_DATE_FROM, YOUR_DATE_TO) # '교량+사고+유지관리', '20190701', '20190710'
 
-for article in articles:
+for article in articles[:3]:
     print('Title: {}'.format(article.title))
     print('Date: {}'.format(article.date))
-    print('Contents: \n{}...'.format(article.content[100:200]))
+    print('Contents: \n{}...'.format(article.content[100:200])) ## Note: avoid junk text
     print()
 ```
 
