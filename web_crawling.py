@@ -31,6 +31,16 @@ pr = Preprocess()
 def get_url_uniq(url):
     return url.split('/')[-1]
 
+def read_articles(query, date_from, date_to):
+    articles = []
+    fdir_articles_query = os.path.join(cfg.root, cfg.fdir_news_corpus_articles, query)
+    for article_date in [date for date in os.listdir(fdir_articles_query) if date_from <= date <= date_to]:
+        fdir_articles = os.path.join(fdir_articles_query, article_date)
+        for fname in os.listdir(fdir_articles):
+            with open(os.path.join(fdir_articles, fname), 'rb') as f:
+                articles.append(pk.load(f))
+    return articles
+
 class Article:
     def __init__(self, **kwargs):
         self.id = kwargs.get('id', '')
@@ -91,7 +101,7 @@ class NewsCrawler:
         self.fname_articles_xlsx = kwargs.get('fname_articles', os.path.join(self.fdir_news_data_articles, '{}_{}_{}.xlsx'.format(self.query.query, self.date_from.date, self.date_to.date)))
 
         self._errors = []
-        self.fname_errors = kwargs.get('fname_errors', os.path.join(cfg.root, cfg.fdir_news_errors))
+        self.fname_errors = kwargs.get('fname_errors', os.path.join(cfg.root, cfg.fdir_news_errors, self.query_info))
 
     def __get_last_page(self):
         start_idx = 1

@@ -11,8 +11,7 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - Gitaek Lee (lgt0427@snu.ac.kr)
 - Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
 
-- - -
-## Initialization (IMPORTANT)
+## _Initialization_ (IMPORTANT)
 The user needs _custom.cfg_ file in the workspace. Refer to _sample.cfg_ for the necessary attributes.  
 Refer to the following hierarchy.
 
@@ -106,7 +105,6 @@ crawling_config = {
 news_crawler = NewsCrawler(**crawling_config)
 ```
 
-Run _**NewsCrawler**_.  
 The crawling process consists of two stages: parse_list_page(_**.get_url_list()**_) and parse_article_page(_**.get_articles()**_).  
 Finally, the crawler parses **url**, **title**, **date**, **category**, **content**, and **comments** from the articles.
 
@@ -116,8 +114,24 @@ news_crawler.get_url_list() ## Note: returns list of url_list_page
 news_crawler.get_articles() ## Note: returns list of articles
 ```
 
-As default, the user can get the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_.  
-Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.
+As default, the user can explore the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_.  
+Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.  
+Use the function _**read_articles()**_ to read the articles data.  
+It returns a list of _**Article**_. Then the user can use the attributes of each element such as _**url**_, _**title**_, _**date**_, _**content**_, _**comment_list**_.
+See _web_crawling.py/Article()_ for more information.  
+Note that the content of article commonly starts with a junk text such as _'// flash 오류를 우회하기 위한 함수 추가 function \_flash\_removeCallback() \{\}'_.
+
+```python
+from blanknlp.web_crawling import read_articles
+
+articles = read_articles(query, date_from, date_to) # '교량+사고+유지관리', '20190701', '20190710'
+
+for article in articles:
+    print('Title: {}'.format(article.title))
+    print('Date: {}'.format(article.date))
+    print('Contents: \n{}...'.format(article.content[100:200]))
+    print()
+```
 
 ## Web Crawling: Twitter
 _Not Ready Yet_
