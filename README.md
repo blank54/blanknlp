@@ -13,27 +13,29 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 
 - - -
 ## Initialization (IMPORTANT)
-Modify _**custom.cfg**_ before use _**blanknlp**_.  
-- _**root**_ is your root directory for the current project.  
-- _**blanknlp**_ is the directory where the _**blanknlp**_ package installed.
+The user needs _custom.cfg_ file in the workspace. Refer to _sample.cfg_ for the necessary attributes.  
+Refer to the following hierarchy.
 
-```python
-# Directory
-root: 'YOUR_ROOT_DIRECTORY' # '/data/blank54/workspace/my_project'
-blanknlp: 'FDIR_OF_PACKAGE' # '/data/blank54/workspace/my_project/blanknlp/'
+```
+WORKSPACE
+    └blanknlp
+        └sample.cfg
+        └...
+    └custom.cfg
+    └...
 ```
 
 - - -
 
-## Data
+# Data
 We provide some pickled data for tutorial.  
-The users can reach it as below.
+The data is uploaded at _'./blanknlp/data/sample.pk'_ and the user can use it via _cfg.fname_docs_sample_.
 
 ```python
 import os
 import pickle as pk
 
-fname_docs_sample = './blanknlp/data/sample.pk'
+fname_docs_sample = os.path.join(cfg.root, cfg.fname_docs_sample)
 with open(fname_docs_sample, 'rb') as f:
     docs = pk.load(f)
 ```
@@ -43,41 +45,48 @@ Each _**doc**_ consists of 100 words with several stopwords removed.
 
 ```python
 print('# of docs: {}'.format(len(docs)))
-
 for idx, doc in enumerate(docs):
     print('# of words in doc: {}'.format(len(doc)))
     print(doc[:5])
-
     if idx > 3:
         break
 ```
 
 - - -
 
-## Web Crawling
+# Preprocessing
+## Preprocessing: English
+_Not Ready Yet_
+
+## Preprocessing: Korean
+_Not Ready Yet_
+
+- - -
+
+# Web Crawling
+## Web Crawling: Naver News
 >Sourcecode:
 >>_web_crawling.py_  
->>_/test/run_web_crawling.py_
+>>_/tutorial/run_web_crawling.py_
 
 A customized class _**NewsCrawler**_ to facilitate the process of web crawling from naver news.  Mainly refer to _**urllib**_ and _**BeautifulSoup**_.
 >https://docs.python.org/3/library/urllib.html  
 >https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
-Note that the **Naver News** platform only provides **4,000 articles** per query.  
+Note that the Naver news platform only provides **4,000 articles** per query.  
 The dafault settings of the web crawler are
 - **3 seconds** sleep after parsing a url page
-- sampling **100** articles from list page if _**do_sampling**_ is _**True**_
+- sampling **100 articles** from list page if _**do_sampling**_ is _**True**_  
 
 Import related libraries
+
 ```python
 # Configuration
 from config import Config
 with open(FNAME_CUSTOM_CONFIG, 'r') as f: # './blanknlp/custom.cfg'
     cfg = Config(f)
 
-import sys
-sys.path.append(cfg.blanknlp)
-from web_crawling import NewsCrawler
+from blanknlp.web_crawling import NewsCrawler
 ```
 
 Build _**NewsCrawler**_ with _**query**_, _**date_from**_, and _**date_to**_.
@@ -103,19 +112,23 @@ Finally, the crawler parses **url**, **title**, **date**, **category**, **conten
 
 ```python
 # Run Crawling
-news_crawler.get_url_list() ## returns list of url_list_page
-news_crawler.get_articles() ## returns list of articles
+news_crawler.get_url_list() ## Note: returns list of url_list_page
+news_crawler.get_articles() ## Note: returns list of articles
 ```
 
 As default, the user can get the crawled data in _.xlsx_ format at _'data/news/articles/YOUR_QUERY/'_.  
 Every article is pickled in _**Article**_ class at _'corpus/news/articles/YOUR_QUERY/'_ by date, which allows the user not to access, parse, and save an article that is already exist in the corpus.
 
+## Web Crawling: Twitter
+_Not Ready Yet_
+
 - - -
 
+# Visualization
 ## Word Network
 >Sourcecode:
 >>_visualize.py_  
->>_/test/run_word_network.py_
+>>_/tutorial/run_word_network.py_
 
 A customized class _**WordNetwork**_ to facilitate the usage of the python library _**networkx**_.
 >https://networkx.github.io/
@@ -123,22 +136,28 @@ A customized class _**WordNetwork**_ to facilitate the usage of the python libra
 The default settings are
 - word combination weighting based on the **distance** within the sentence
 - top **50 words** to be shown in the network
-- save the network with filename _**'tmp_word_network.png'**_ in directory _**'./result/word_network/'**_.
+- save the network with filename _'tmp_word_network.png'_ in directory _'./result/word_network/'_.
 
-The user can customize the settings via _**config**_. See _visualize.py/WordNetwork_ for detail options.
-
+The user can customize the settings via _config_. See _visualize.py/WordNetwork_ for detail options.  
+Import related libraries.
 ```python
 from config import Config
 with open(FNAME_CUSTOM_CONFIG, 'r') as f:
     cfg = Config(f)
 
-import sys
-sys.path.append(cfg.blanknlp)
-from visualize import WordNetwork
+from blanknlp.visualize import WordNetwork
+```
 
+Prepare _**docs**_ and build _**WordNetwork**_.
+
+```python
+# Data Import
+docs = [['word1', 'word2', ...], ['word3', ...], ...]
+
+# Model Development
 wn_config = {
     'docs': docs,
-    'top_n': 100,
+    'top_n': 100, ## Note: top n words to show
     'fname_plt': './result/my_network.png'
 }
 word_network = WordNetwork(**wn_config)
@@ -147,17 +166,18 @@ word_network = WordNetwork(**wn_config)
 Just _**.network()**_ to draw a word network.
 
 ```python
+# Draw Network
 word_network.network()
 ```
 
 - - -
 
-## Text Embedding
+# Text Embedding
 >Sourcecode:
 >>_embedding.py_  
->>_/test/run_embedding.py_
+>>_/tutorial/run_embedding.py_
 
-### TF-IDF
+## Text Embedding: TF-IDF
 Term Frequency-Inverse Document Frequency (TF-IDF), One of the most simple and general text embedding techniques is provided.  
 We utilized _**TfidfVectorizer**_ from _**sklearn**_ library.
 >https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer
@@ -170,27 +190,25 @@ from config import Config
 with open(FNAME_CUSTOM_CONFIG, 'r') as f:
     cfg = Config(f)
 
-import sys
-sys.path.append(cfg.blanknlp)
-from function import makedir
-from embedding import embedding_tfidf
+from blanknlp.function import makedir
+from blanknlp.embedding import embedding_tfidf
 ```
 
 The TF-IDF embedding model requires _**tagged_docs**_, of which format is **list of tuple(id, doc)**.  
-Note that a _**doc**_ is a **list of word** (i.e., [w1, w2, ...]).
+The type of _**id**_ is not restricted to _**str**_, but recommended.
+
 ```python
 # Data Import
-with open(FNAME_DOCS, 'rb') as f:
-    docs = pk.load(f)
+docs = ['This is a sentecne', 'This is another sentence', ...]
 
 # Data Preparation
-tagged_docs = [(str(idx), ' '.join(doc)) for idx, doc in enumerate(docs)]
+tagged_docs = [(str(idx), doc) for idx, doc in enumerate(docs)]
 ```
 
 Embedding TF-IDF and save the model. The TF-IDF model is composed of three items (i.e., _**id2idx**_, _**tfidf_matrix**_, _**tfidf_vocab**_).
-- **id2idx**: a dictionary that returns the **row index of tfidf_matrix** of each **id of doc** in **tagged_docs**.
-- **tfidf_matrix**: a matrix of numeric value (i.e., TF-IDF) with row length of **# of document** and column length of **vocabulary size**.
-- **tfdif_vocab**: a dictionary of vocabularies used in whole _**tagged_docs**_, which returns the **column index of tfidf_matrix** of each term.
+- _**id2idx**_: a dictionary that returns the **row index of tfidf_matrix** of each **id of doc** in _**tagged_docs**_.
+- _**tfidf_matrix**_: a matrix of numeric value (i.e., TF-IDF) with row length of **# of document** and column length of **vocabulary size**.
+- _**tfdif_vocab**_: a dictionary of vocabularies used in whole _**tagged_docs**_, which returns the **column index of tfidf_matrix** of each term.
 
 The user should keep these three items to utilize TF-IDF results.
 
@@ -200,7 +218,7 @@ tfidf_model = embedding_tfidf(tagged_docs=tagged_docs)
 id2idx, tfidf_matrix, tfidf_vocab = tfidf_model
 print('Shape of TF-IDF (# of docs, # of terms): {}'.format(tfidf_matrix.shape))
 
-with open(FNAME_TFIDF_MODEL, 'wb') as f:
+with open(FNAME_TFIDF_MODEL, 'wb') as f: # os.path.join(cfg.root, cfg.fname_tfidf_model)
     pk.dump(tfidf_model, f)
 ```
 
@@ -209,15 +227,21 @@ The sample code assumed that the user needs the tfidf vector of **document id 7*
 
 ```python
 # TF-IDF Model Usage
-with open(FNAME_TFIDF_MODEL, 'rb') as f:
+with open(FNAME_TFIDF_MODEL, 'rb') as f: # os.path.join(cfg.root, cfg.fname_tfidf_model)
     tfidf_model = pk.load(f)
     id2idx, tfidf_matrix, tfidf_vocab = tfidf_model
 
 idx = 7
 doc_id, doc_text = tagged_docs[idx]
-tfidf_vector = tfidf_matrix[id2idx[doc_id],:] # TF-IDF vector for tagged_docs[idx]
+tfidf_vector = tfidf_matrix[id2idx[doc_id],:] ## Note: TF-IDF vector for tagged_docs[idx]
 print('TF-IDF ID of Doc[{}]: {}'.format(idx, id2idx[str(idx)]))
 print('TF-IDF Vector of Doc[{}]:'.format(id2idx[str(idx)]))
 print(tfidf_vector)
 print(tfidf_vector.shape)
 ```
+
+## Text Embedding: Word2Vec
+_Not Ready Yet_
+
+## Text Embedding: Doc2Vec
+_Not Ready Yet_
