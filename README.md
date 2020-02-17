@@ -54,12 +54,11 @@ for idx, doc in enumerate(docs):
 # Preprocessing
 ## Preprocessing: English
 >Sourcecode:
->>_function.py/Preprocess()_
+>>_function.py/Preprocess()_  
 >>_/tutorial/run_preprocess.py_
 
 The _**Preprocess**_ provides several functions to preprocess the text data in English.  
-Mainly utilizes the python library _**nltk**_ as default (e.g., stopword_removal, stemming, lemmatization), but also supports customized preprocessing using the thesaurus lists at _/thesaurus/_.  
-Modify the thesaurus lists for what you need.  
+Mainly utilizes the python library _**nltk**_ as default (e.g., stopword_removal, stemming, lemmatization), but also supports customized preprocessing using the thesaurus lists at _/thesaurus/_. Modify the thesaurus lists for what you need.  
 >https://www.nltk.org/
 
 THe default settings of the _**Preprocess**_ are
@@ -91,7 +90,7 @@ pr = Preprocess(**pr_config)
 ```
 
 Import docs and preprocess the data.  
-The result _**docs_prep**_ would be a list of preprocessed _**doc**_ (i.e., a list of sentences that cleaned, synonymed, lowered, and customized stopwords removed).
+The result (i.e., _**docs_prep**_) is a list of preprocessed _**doc**_ (i.e., a list of sentences that cleaned, synonymed, lowered, and customized stopwords removed).
 
 ```python
 docs_prep = []
@@ -100,9 +99,8 @@ for doc in docs:
     docs_prep.append([pr.stemmize(sent) for sent in sents])
 ```
 
-For the users who need a particular function of _**Preprocess**_, the model provides several methods to be used directly.  
-Each method overlaps the former result as the level of preprocessing goes deeper.  
-For example, the _**stopword_removal**_ requires _**cleaning**_ and _**tokenize**_ as mandatory, and _**synonym**_, _**lower**_, and _**marking**_ as optional.
+For the users who need a particular function of _**Preprocess**_, we provide several methods to be used directly.  
+Note that each method overlaps the former result as the level of preprocessing goes deeper. For example, the _**stopword_removal**_ requires _**cleaning**_ and _**tokenize**_ as mandatory, and _**synonym**_, _**lower**_, and _**marking**_ as optional.
 
 ```python
 for doc in docs:
