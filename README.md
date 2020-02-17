@@ -28,34 +28,93 @@ WORKSPACE
 
 # Data
 We provide some pickled data for tutorial.  
-The data is uploaded at _'./blanknlp/data/sample.pk'_ and the user can use it via _cfg.fname_docs_sample_.
+The data is uploaded at _'./blanknlp/data/sample_eng.pk'_ and the user can use it via _cfg.fname_docs_sample_eng_.  
+A sample data in Korean will be provided soon.
 
 ```python
 import os
 import pickle as pk
 
-fname_docs_sample = os.path.join(cfg.root, cfg.fname_docs_sample)
-with open(fname_docs_sample, 'rb') as f:
+fname_docs_sample_eng = os.path.join(cfg.root, cfg.fname_docs_sample_eng)
+with open(fname_docs_sample_eng, 'rb') as f:
     docs = pk.load(f)
 ```
 
 The _**docs**_ contains 58 documents.  
-Each _**doc**_ consists of 100 words with several stopwords removed.
+Each _**doc**_ consists of 1000 characters.
 
 ```python
 print('# of docs: {}'.format(len(docs)))
 for idx, doc in enumerate(docs):
-    print('# of words in doc: {}'.format(len(doc)))
-    print(doc[:5])
-    if idx > 3:
-        break
+    print(doc)
 ```
 
 - - -
 
 # Preprocessing
 ## Preprocessing: English
-_Not Ready Yet_
+>Sourcecode:
+>>_function.py/Preprocess()_
+>>_/tutorial/run_preprocess.py_
+
+The _**Preprocess**_ provides several functions to preprocess the text data in English.  
+Mainly utilizes the python library _**nltk**_ as default (e.g., stopword_removal, stemming, lemmatization), but also supports customized preprocessing using the thesaurus lists at _/thesaurus/_.  
+Modify the thesaurus lists for what you need.  
+>https://www.nltk.org/
+
+THe default settings of the _**Preprocess**_ are
+- use _**stopwords**_ from _**nltk.corpus**_ for the default stoplist
+- use _**LancasterStemmer**_ from _**nltk.stem.lancaster**_
+- use _**WordNetLemmatizer**_ from _**nltk.stem**_
+
+Import related libraries
+
+```python
+# Configuration
+from config import Config
+with open(FNAME_CUSTOM_CONFIG, 'r') as f: # './blanknlp/custom.cfg'
+    cfg = Config(f)
+
+from blanknlp.function import Preprocess
+```
+
+Build _**Preprocess**_ model with config.
+
+```python
+pr_config = {
+    'do_synonym': True,
+    'do_lower': True,
+    'do_stop': True,
+    'stoplist': 'custom'
+}
+pr = Preprocess(**pr_config)
+```
+
+Import docs and preprocess the data.  
+The result _**docs_prep**_ would be a list of preprocessed _**doc**_ (i.e., a list of sentences that cleaned, synonymed, lowered, and customized stopwords removed).
+
+```python
+docs_prep = []
+for doc in docs:
+    sents = pr.cleaning(doc).split('  ')
+    docs_prep.append([pr.stemmize(sent) for sent in sents])
+```
+
+For the users who need a particular function of _**Preprocess**_, the model provides several methods to be used directly.  
+Each method overlaps the former result as the level of preprocessing goes deeper.  
+For example, the _**stopword_removal**_ requires _**cleaning**_ and _**tokenize**_ as mandatory, and _**synonym**_, _**lower**_, and _**marking**_ as optional.
+
+```python
+for doc in docs:
+    sents = pr.cleaning(doc).split('  ')
+    for sent in sents:
+        sent_prep = pr.synonym(sent)
+        # sent_prep = pr.marking(sent)
+        sent_prep = pr.tokenize(sent)
+        sent_prep = pr.stopword_removal(sent)
+        print('BEFORE: {}'.format(sent))
+        print('AFTER: {}'.format(sent_prep))
+```
 
 ## Preprocessing: Korean
 _Not Ready Yet_
@@ -77,7 +136,7 @@ The dafault settings of the web crawler are
 - **3 seconds** sleep after parsing a url page
 - sampling **100 articles** from list page if _**do_sampling**_ is _**True**_  
 
-Import related libraries
+Import related libraries.
 
 ```python
 # Configuration
