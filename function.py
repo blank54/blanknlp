@@ -9,7 +9,6 @@ config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
 import re
 import pickle as pk
 import pandas as pd
-from konlpy.tag import Komoran
 
 import nltk
 from nltk.corpus import stopwords
@@ -65,6 +64,8 @@ class Preprocess:
         self.stopphrase_list = self.__read_stopphrase_list()
         self.stopword_list = self.__read_stopword_list()
 
+        self.userdic = self.__build_userdic()
+
         self.note = kwargs.get('note', '')
 
     def __read_synonym_rule(self):
@@ -99,8 +100,16 @@ class Preprocess:
         elif self.stoplist == 'merge':
             return list(set(stopword_list_nltk+stopword_list_custom))
 
-    ## TODO
-    # def __
+    def __build_userdic(self):
+        with open(self.fname_userword, 'r', encoding='utf-8') as f:
+            wordlist = f.read().strip().split('\n')
+            try:
+                userdic = '\n'.join(['{}\tNNP'.format(str(w)) for w in sorted(set(wordlist)) if len(w)])
+            except:
+                userdic = []
+
+        with open(self.fname_userdic, 'w', encoding='utf-8') as f:
+            f.write(userdic.replace('\ufeff', ''))
 
     def cleaning(self, text):
         for stopphrase in self.stopphrase_list:
