@@ -29,7 +29,7 @@ class WordNetwork:
         self.docs_cnt = len(self.docs)
 
         self.count_option = kwargs.get('count_option', 'dist')
-        self.combinations = self.__combinations()
+        self.combinations = kwargs.get('combinations', self.__combinations())
 
         self.top_n = kwargs.get('top_n', 50)
         self.fig_width = kwargs.get('fig_width', 10)
@@ -43,7 +43,7 @@ class WordNetwork:
         self.nx_box_edge_color = kwargs.get('nx_box_edge_color', 'white')
         self.nx_font_size = kwargs.get('nx_font_size', 6) # Font Size
 
-        self.save_plt = kwargs.get('save_plt', True)
+        self.save_plt = kwargs.get('save_plt', False)
         self.fname_plt = kwargs.get('fname_plt', os.path.join(cfg.root, cfg.fdir_word_network, 'tmp_word_network.png'))
         self.show_plt = kwargs.get('show_plt', True)
 
