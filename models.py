@@ -9,6 +9,7 @@ config_path = os.path.sep.join(abspath.split(os.path.sep)[:-1])
 import csv
 import numpy as np
 import pickle as pk
+import pandas as pd
 from time import time
 from tqdm import tqdm
 from collections import defaultdict
@@ -288,6 +289,7 @@ class NER_Model:
         self.fpath_ner_model = fpath_ner_model
         self.fpath_ner_corpus = kwargs.get('fpath_ner_corpus', self.fpath_ner_model.replace('model', 'corpus').replace('.h5', '.pk'))
         self.corpus = self.__read_corpus(self.fpath_ner_corpus)
+        self.word_vector = self.corpus.word_vector
 
         self.x_train = self.corpus.x_train
         self.x_test = self.corpus.x_test
@@ -302,6 +304,7 @@ class NER_Model:
         self.labels = self.corpus.labels
         self.n_labels = self.labels.n_labels
         self.word2id = self.corpus.labeled_docs.word2id
+        self.id2word = self.corpus.labeled_docs.id2word
                 
         self.parameters = kwargs.get('parameters', {})
         self.lstm_units = self.parameters.get('lstm_units', 512)
@@ -333,14 +336,6 @@ class NER_Model:
             return None
 
     def __initialization(self):
-        # model = Sequential()
-        # model.add(Bidirectional(LSTM(units=self.lstm_units, recurrent_dropout=self.lstm_recurrent_dropout, return_sequences=self.lstm_return_sequences)))
-        # model.add(TimeDistributed(Dense(units=self.dense_units, activation=self.dense_activation)))
-        # crf = CRF(self.n_labels)
-        # model.add(crf)
-
-        # model.compile(optimizer='rmsprop', loss=crf.loss_function, metrics=[crf.accuracy])
-
         input = Input(shape=(self.input_shape))
         model = Bidirectional(LSTM(units=self.lstm_units,
                                    return_sequences=self.lstm_return_sequences,
@@ -386,11 +381,12 @@ class NER_Model:
         if time_verbose:
             print('Fitting Time of NER Model: {:,.02f} minutes'.format((_end-_start)/60))
             
+    # TODO:
     def __pred2labels(self, sents, prediction):
         pred_labels = []
         for sent, pred in zip(sents, prediction):
             try:
-                sent_len = np.where(sent==self.labels.label2id['__PAD__'])[0][0]
+                sent_len = np.where(sent==self.word2id['__PAD__'])[0][0]
             except:
                 sent_len = self.max_sent_len
                 
@@ -450,16 +446,71 @@ class NER_Model:
         print('Average F1 Score: %.03f' %self.f1)
 
     def predict(self, sent):
+        '''
+        sent: list of words (e.g., [w1, w2, ...])
+        '''
         sent_by_id = []
-        for word in sent:
+        for w in sent:
             try:
-                sent_by_id.append(self.word2id[word])
+                sent_by_id.append(self.word2id[w])
             except:
                 sent_by_id.append(self.word2id['__UNK__'])
 
         sent_by_id_pad = pad_sequences(maxlen=self.max_sent_len, sequences=[sent_by_id], padding='post', value=self.word2id['__PAD__'])
-        predictions = self.model.predict(sent_by_id_pad, verbose=self.verbose)
+        x_input = np.zeros((1, self.max_sent_len, self.feature_size), dtype=list)
+        for j, id in enumerate(sent_by_id_pad[0]):
+            for k in range(self.feature_size):
+                word = self.id2word[id]
+                x_input[0, j, k] = self.word_vector[word][k]
+        
+        predictions = self.model.predict(x_input, verbose=self.ner_verbose)
         pred_labels = self.__pred2labels(sent_by_id_pad, predictions)[0]
-
         ner_result = NER_Result(input_sent=sent, pred_labels=pred_labels)
         return ner_result
+
+
+class NER_Compare:
+    def __init__(self, ner_result_left, ner_result_right, **kwargs):
+        self.result_left = ner_result_left
+        self.result_right = ner_result_right
+
+        self.fpath_ner_labels = kwargs.get('fpath_ner_labels', '')
+        self.labels = self.__read_ner_labels()
+
+        self.left2right = self.__compare(self.result_left, self.result_right)
+        self.right2left = self.__compare(self.result_right, self.result_left)
+
+        self.note = kwargs.get('note', 'Class: NER_Compare')
+
+    def __read_ner_labels(self):
+        labels = []
+        if self.fpath_ner_labels:
+            labels = NER_Labels(fpath_ner_labels=self.fpath_ner_labels).labels
+        else:
+            labels = list(set(list(self.result_left.result.keys())+list(self.result_right.result.keys())))
+        
+        try:
+            labels.pop(labels.index('__PAD__'))
+        except ValueError:
+            pass
+            
+        return labels
+
+    def __compare(self, a, b):
+        diff = defaultdict(list)
+        for label in self.labels:
+            for e in a.result[label]:
+                if e not in b.result[label]:
+                    diff[label].append(e)
+        return diff
+
+    def table(self):
+        result = defaultdict(list)
+        for label in self.labels:
+            result['labels'].append(label)
+            result['left'].append(', '.join(self.left2right[label]))
+            result['right'].append(', '.join(self.right2left[label]))
+
+        data = pd.DataFrame(result)
+        data = data.set_index('labels')
+        return data
