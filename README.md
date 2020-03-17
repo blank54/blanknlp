@@ -58,7 +58,7 @@ data_handler = DataHandler()
 ```
 
 It covers following methods with straightforward names:
-1. .makedir():  
+1. _**.makedir()**_:  
   - creates a directory.
 
 ```python
@@ -74,9 +74,9 @@ data_handler.makedir(path=fname)
 # If the directory exists, do nothing.
 ```
 
-2. .export_excel():  
-  - saves a _**dict**_ or _**DataFrame**_ object in _**.xlsx**_ format.
-  - provides _index_ and _orient_ options of _**pd.DataFrame()**_.
+2. _**.export_excel()**_:  
+It saves a _**dict**_ or _**DataFrame**_ object in _**.xlsx**_ format.  
+Also provides _index_ and _orient_ options of _**pd.DataFrame()**_.
 
 ```python
 import pandas as pd
@@ -91,16 +91,16 @@ data_handler.export_excel(data=data_dict, fname=YOUR_FNAME)
 data_handler.export_excel(data=data_df, fname=YOUR_FNAME)
 ```
 
-3. .flist_archive():  
-  - returns every filenames from every sub-directories of the input directory.
+3. _**.flist_archive()**_:  
+It returns every filenames from every sub-directories of the input directory.
 
 ```python
 fdir = './YOUR_DIRCTORY'
 flist = data_handler.flist_archive(fdir)
 ```
 
-4. .f1_score():
-  - requires precision and recall values and returns a non-biased f1 score.
+4. _**.f1_score()**_:
+It requires precision and recall values and returns a non-biased f1 score.
 
 ```python
 precision = YOUR_PRECISION_VALUE
@@ -109,9 +109,9 @@ recall = YOUR_RECALL_VALUE
 f1_score = data_handler.f1_score(p=precision, r=recall)
 ```
 
-5. .get_latest_fpath():
-  - returns the latest file in the input directory.
-  - NOTE: _not verified yet._
+5. _**.get_latest_fpath()**_:
+It returns the latest file in the input directory.
+NOTE: _not verified yet_.
 
 ```python
 fpath = './YOUR_DIRCTORY'
@@ -126,7 +126,7 @@ fpath_latest = data_handler.get_latest_fpath(fpath)
 >Sourcecode:
 >>_function.py/TextHandler_
 
-The _**TextHandle**_ provides several useful functions of Natural Language Processing (NLP) to handle the text data. The users might utilize it before preprocess the text.
+The _**TextHandler**_ provides several useful functions of Natural Language Processing (NLP) to handle the text data. The users might utilize it before preprocess the text.
 
 ```python
 from blanknlp.function import TextHandler
@@ -137,14 +137,16 @@ text_handler = TextHandler()
 The users can modify the dictionaries of the _**TextHandler**_.
 The dictionary lists are initialized in './blanknlp/thesaurus/'. Update the list to fit the analysis purpose.
 The elements of the list should be separated with the EOL(i.e., \n).
+
 - stopphrase_list.txt
-- synonym_list.txt
-- unit_list.txt
-
 A _Stopphrase list_ covers a group of unnecessary words, numbers, or characters, which disturbs the meaning of the text. Crawled news articles or table of contents from reports might have ones.  
-The _Synonym list_ covers terms that represent the same instance but written in different notations.  
-The _Unit list_ covers various unit notations. It can be recognized as a specific version of synonyms for units.
 
+- synonym_list.txt
+The _Synonym list_ covers terms that represent the same instance but written in different notations.  
+
+- unit_list.txt
+The _Unit list_ covers various unit notations. It can be recognized as a specific version of synonyms for units.  
+  
 CAUTION: Save the lists in customized filenames, so not to be overwritten by _git pull_.  
 NOTE: The lists are language-independent.
 
