@@ -105,7 +105,6 @@ It requires precision and recall values and returns a non-biased f1 score.
 ```python
 precision = YOUR_PRECISION_VALUE
 recall = YOUR_RECALL_VALUE
-
 f1_score = data_handler.f1_score(p=precision, r=recall)
 ```
 
@@ -115,7 +114,6 @@ NOTE: _not verified yet_.
 
 ```python
 fpath = './YOUR_DIRCTORY'
-
 fpath_latest = data_handler.get_latest_fpath(fpath)
 ```
 
@@ -133,7 +131,7 @@ from blanknlp.function import TextHandler
 text_handler = TextHandler()
 ```
 
-### User Dictionary
+### TextHandler: User Dictionary
 The users can modify the dictionaries of the _**TextHandler**_.
 The dictionary lists are initialized in './blanknlp/thesaurus/'. Update the list to fit the analysis purpose.
 The elements of the list should be separated with the EOL(i.e., \n).
@@ -146,7 +144,7 @@ The _Synonym list_ covers terms that represent the same instance but written in 
 
 - unit_list.txt  
 The _Unit list_ covers various unit notations. It can be recognized as a specific version of synonyms for units.  
-  
+
 CAUTION: Save the lists in customized filenames, so not to be overwritten by _git pull_.  
 NOTE: The lists are language-independent.
 
@@ -160,14 +158,13 @@ The user can utilize the method _**synonym()**_ as below. Every word of the inpu
 
 ```python
 YOUR_TEXT = 'I am a boy'
-
 YOUR_TEXT_AFTER_SYNONYM = text_handler.synonym(text=YOUR_TEXT)
 ```
 
-### Word Marking
+### TextHandler: Word Marking
 _Not Ready Yet_
 
-### Cleaning
+### TextHandler: Cleaning
 _Not Ready Yet_
 
 <!-- 
