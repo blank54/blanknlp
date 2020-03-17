@@ -138,13 +138,13 @@ The users can modify the dictionaries of the _**TextHandler**_.
 The dictionary lists are initialized in './blanknlp/thesaurus/'. Update the list to fit the analysis purpose.
 The elements of the list should be separated with the EOL(i.e., \n).
 
-- stopphrase_list.txt
+- stopphrase_list.txt  
 A _Stopphrase list_ covers a group of unnecessary words, numbers, or characters, which disturbs the meaning of the text. Crawled news articles or table of contents from reports might have ones.  
 
-- synonym_list.txt
+- synonym_list.txt  
 The _Synonym list_ covers terms that represent the same instance but written in different notations.  
 
-- unit_list.txt
+- unit_list.txt  
 The _Unit list_ covers various unit notations. It can be recognized as a specific version of synonyms for units.  
   
 CAUTION: Save the lists in customized filenames, so not to be overwritten by _git pull_.  
