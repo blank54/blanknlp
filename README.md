@@ -11,6 +11,12 @@ Mainly reconstitute the pre-exist python libraries for TM and NLP.
 - Gitaek Lee (lgt0427@snu.ac.kr)
 - Taeyeon Chang (jgwoon1838@snu.ac.kr, _a.k.a. Kowoon Chang_)
 
+## _Release Note_
+2020.03.17. (TUE)
+- The sample data in Korean is uploaded.
+- _**DataHandler**_ and _**TextHandler**_ is now released.
+
+
 ## _Initialization_ (IMPORTANT)
 The user needs _custom.cfg_ file in the workspace. Refer to _sample.cfg_ for the necessary attributes.  
 Refer to the following hierarchy.
@@ -21,15 +27,16 @@ WORKSPACE
         └sample.cfg
         └...
     └custom.cfg
+    └YOUR_PYTHON_CODE.py
     └...
 ```
 
 - - -
 
 # Data
-We provide some pickled data for tutorial.  
-The data is uploaded at _'./blanknlp/data/sample_eng.pk'_ and the user can use it via _cfg.fname_docs_sample_eng_.  
-A sample data in Korean will be provided soon.
+## Sample Data
+We provide some pickled data for tutorial at _'./blanknlp/data/'_.  
+The user can use it via _cfg.fname_docs_sample_eng_ for English data, or _cfg.fname_docs_sample_kor_ for Korean data.  
 
 ```python
 import os
@@ -40,18 +47,134 @@ with open(fname_docs_sample_eng, 'rb') as f:
     docs = pk.load(f)
 ```
 
-The _**docs**_ contains 58 documents.  
-Each _**doc**_ consists of 1000 characters.
+## DataHandler
+>Sourcecode:
+>>_function.py/DataHandler_
+The class _**DataHandle**_ wrapped up several useful functions that frequently used during python programming.
 
 ```python
-print('# of docs: {}'.format(len(docs)))
-for idx, doc in enumerate(docs):
-    print(doc)
+from blanknlp.function import DataHandler
+data_handler = DataHandler()
+```
+
+It covers following methods with straightforward names:
+1. .makedir():  
+  - creates a directory.
+
+```python
+fdir = '../YOUR_DIRCTORY/'
+fname = '../YOUR_DIRCTORY/FILENAME.tmp'
+
+# If the input is a directory, create it.
+data_handler.makedir(path=fdir)
+
+# If the input is a filename, create the mother directory.
+data_handler.makedir(path=fname)
+
+# If the directory exists, do nothing.
+```
+
+2. .export_excel():  
+  - saves a _**dict**_ or _**DataFrame**_ object in _**.xlsx**_ format.
+  - provides _index_ and _orient_ options of _**pd.DataFrame()**_.
+
+```python
+import pandas as pd
+
+data_dict = {}
+data_df = pd.DataFrame(data_dict)
+
+# If the input is a dictionary, convert it to DataFrame and save it.
+data_handler.export_excel(data=data_dict, fname=YOUR_FNAME)
+
+# If the input is a DataFrame, save it.
+data_handler.export_excel(data=data_df, fname=YOUR_FNAME)
+```
+
+3. .flist_archive():  
+  - returns every filenames from every sub-directories of the input directory.
+
+```python
+fdir = './YOUR_DIRCTORY'
+flist = data_handler.flist_archive(fdir)
+```
+
+4. .f1_score():
+  - requires precision and recall values and returns a non-biased f1 score.
+
+```python
+precision = YOUR_PRECISION_VALUE
+recall = YOUR_RECALL_VALUE
+
+f1_score = data_handler.f1_score(p=precision, r=recall)
+```
+
+5. .get_latest_fpath():
+  - returns the latest file in the input directory.
+  - NOTE: _not verified yet._
+
+```python
+fpath = './YOUR_DIRCTORY'
+
+fpath_latest = data_handler.get_latest_fpath(fpath)
 ```
 
 - - -
 
 # Preprocessing
+## TextHandler
+>Sourcecode:
+>>_function.py/TextHandler_
+
+The _**TextHandle**_ provides several useful functions of Natural Language Processing (NLP) to handle the text data. The users might utilize it before preprocess the text.
+
+```python
+from blanknlp.function import TextHandler
+text_handler = TextHandler()
+```
+
+### User Dictionary
+The users can modify the dictionaries of the _**TextHandler**_.
+The dictionary lists are initialized in './blanknlp/thesaurus/'. Update the list to fit the analysis purpose.
+The elements of the list should be separated with the EOL(i.e., \n).
+- stopphrase_list.txt
+- synonym_list.txt
+- unit_list.txt
+
+A _Stopphrase list_ covers a group of unnecessary words, numbers, or characters, which disturbs the meaning of the text. Crawled news articles or table of contents from reports might have ones.  
+The _Synonym list_ covers terms that represent the same instance but written in different notations.  
+The _Unit list_ covers various unit notations. It can be recognized as a specific version of synonyms for units.
+
+CAUTION: Save the lists in customized filenames, so not to be overwritten by _git pull_.  
+NOTE: The lists are language-independent.
+
+```python
+text_handler.fname_stopphrase_list = './YOUR_STOPPHRASE_LIST.txt'
+text_handler.fname_synonym_list = './YOUR_SYNONYM_LIST.txt'
+text_handler.fname_unit_list = './YOUR_UNIT_LIST.txt'
+```
+
+The user can utilize the method _**synonym()**_ as below. Every word of the input text that included in the synonym list would be converted into its synonym.
+
+```python
+YOUR_TEXT = 'I am a boy'
+
+YOUR_TEXT_AFTER_SYNONYM = text_handler.synonym(text=YOUR_TEXT)
+```
+
+### Word Marking
+_Not Ready Yet_
+
+### Cleaning
+_Not Ready Yet_
+
+<!-- 
+### Text Handling
+1. Word Marking
+2. Cleaning
+
+ -->
+<!-- 
 ## Preprocessing: English
 >Sourcecode:
 >>_function.py/Preprocess()_  
@@ -115,7 +238,8 @@ for doc in docs:
 ```
 
 ## Preprocessing: Korean
-_Not Ready Yet_
+_Not Ready Yet_ 
+-->
 
 - - -
 
