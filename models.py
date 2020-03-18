@@ -187,7 +187,7 @@ class NER_Result:
 
 
 class NER_Corpus:
-    def __init__(self, ner_labeled_docs, ner_labels, fpath_w2v_model, max_sent_len, feature_size, **kwargs):
+    def __init__(self, ner_labeled_docs, ner_labels, fpath_w2v_model, max_sent_len, **kwargs):
         self.labeled_docs = ner_labeled_docs
         self.labels = ner_labels
 
