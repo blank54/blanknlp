@@ -187,7 +187,7 @@ class NER_Result:
 
 
 class NER_Corpus:
-    def __init__(self, ner_labeled_docs, ner_labels, w2v_model, max_sent_len, feature_size, **kwargs):
+    def __init__(self, ner_labeled_docs, ner_labels, fpath_w2v_model, max_sent_len, feature_size, **kwargs):
         self.labeled_docs = ner_labeled_docs
         self.labels = ner_labels
 
@@ -195,11 +195,10 @@ class NER_Corpus:
         self.fname_ner_weight_labels = kwargs.get('fname_ner_weight_labels', '')
         self.weight_labels = NER_WeightLabels(fname_ner_weight_labels=self.fname_ner_weight_labels)
         
-        self.max_sent_len = max_sent_len
-        self.feature_size = w2v_model.vector_size
-
+        self.fpath_w2v_model = fpath_w2v_model
         self.update_w2v = kwargs.get('update_w2v', False)
-        self.word_vector = self.__get_word_vector(current_model=w2v_model)
+        self.max_sent_len = max_sent_len
+        self.feature_size, self.word_vector = self.__get_word_vector()
         
         self.x_words, self.y_labels = self.__padding()
         self.x, self.y = self.__embedding()
@@ -219,27 +218,31 @@ class NER_Corpus:
         
     def __get_word_vector(self, **kwargs):
         print('>>Update Word2Vec model')
-        fpath_w2v_model_for_ner = os.path.join('/data/blank54/workspace/spec/model/w2v/', 'w2v_for_ner.pk')
-        
-        if self.update_w2v:
-            w2v_model = kwargs.get('current_model', '')
+        fpath_w2v_model_for_ner = self.fpath_w2v_model.replace('.pk', '_ner.pk')
+
+        if self.update_w2v or not os.path.isfile(fpath_w2v_model_for_ner):
+            with open(self.fpath_w2v_model, 'rb') as f:
+                w2v_model = pk.load(f)
             new_docs = [d.sent for d in self.labeled_docs]
+
             try:
                 new_w2v_model = update_word2vec(current_model=w2v_model, new_docs=new_docs)
             except:
                 new_w2v_model = update_word2vec(current_model=w2v_model.model, new_docs=new_docs)
+
             data_handler.makedir(fpath_w2v_model_for_ner)
             with open(fpath_w2v_model_for_ner, 'wb') as f:
                 pk.dump(new_w2v_model, f)
         else:
             with open(fpath_w2v_model_for_ner, 'rb') as f:
                 new_w2v_model = pk.load(f)
-            
+        
+        feature_size = new_w2v_model.wv.vector_size
         word_vector = new_w2v_model.wv
-        word_vector['__PAD__'] = np.zeros(self.feature_size)
-        word_vector['__UNK__'] = np.zeros(self.feature_size)
+        word_vector['__PAD__'] = np.zeros(feature_size)
+        word_vector['__UNK__'] = np.zeros(feature_size)
         del new_w2v_model
-        return word_vector
+        return feature_size, word_vector
 
     def __padding(self):
         print('>>Padding LabeledDocs')
