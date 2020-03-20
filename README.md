@@ -7,8 +7,8 @@ Mainly reconstitute the pre-exist python libraries for Natural Language Processi
 - First Release: 2020.02.12.
 
 ## _Release Note_
-- 1.0.1 (2020.03.20.)
-Modified an input type of _**NER Model**_.
+- 1.0.0 (2020.02.12.): Initialized
+- 1.0.1 (2020.03.20.): Modified an input type of _**NER Model**_.
 
 ## _Contributors_
 - Seonghyeon Boris Moon (blank54@snu.ac.kr, https://github.com/blank54/)
