@@ -1,10 +1,11 @@
 # blanknlp
 A bunch of python codes to analyze text data in the construction industry.  
-Mainly reconstitute the pre-exist python libraries for TM and NLP.
+Mainly reconstitute the pre-exist python libraries for Natural Language Processing (NLP).
 
 ## _Project Information_
 - Supported by C!LAB (@Seoul Nat'l Univ.)
 - First Release: 2020.02.12.
+- Current Release: 1.0.1
 
 ## _Contributors_
 - Seonghyeon Boris Moon (blank54@snu.ac.kr, https://github.com/blank54/)
