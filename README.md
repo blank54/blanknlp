@@ -5,7 +5,7 @@ Mainly reconstitute the pre-exist python libraries for Natural Language Processi
 ## _Project Information_
 - Supported by C!LAB (@Seoul Nat'l Univ.)
 - First Release: 2020.02.12.
-- Current Release: 1.0.1
+- Current Release (2020.03.20.): 1.0.1
 
 ## _Contributors_
 - Seonghyeon Boris Moon (blank54@snu.ac.kr, https://github.com/blank54/)
