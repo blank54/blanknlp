@@ -450,10 +450,10 @@ class NER_Model:
 
     def predict(self, sent):
         '''
-        sent: list of words (e.g., [w1, w2, ...])
+        sent: list of lowercase words (e.g., [w1, w2, ...])
         '''
         sent_by_id = []
-        for w in sent:
+        for w in [w.lower() for w in sent]:
             try:
                 sent_by_id.append(self.word2id[w])
             except:
