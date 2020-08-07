@@ -31,17 +31,19 @@ class WordNetwork:
         self.count_option = kwargs.get('count_option', 'dist')
         self.combinations = kwargs.get('combinations', self.__combinations())
 
-        self.top_n = kwargs.get('top_n', 50)
+        self.top_n = kwargs.get('top_n', '')
         self.fig_width = kwargs.get('fig_width', 10)
         self.fig_height = kwargs.get('fig_height', 8)
         self.fig_dpi = kwargs.get('fig_dpi', 300)
 
+        self.direction = kwargs.get('direction', False)
         self.nx_edge_color = kwargs.get('nx_edge_color', 'grey')
         self.nx_node_color = kwargs.get('nx_node_color', 'purple')
         self.nx_box_color = kwargs.get('nx_box_color', 'white')
         self.nx_box_transparency = kwargs.get('nx_box_transparency', 0)
         self.nx_box_edge_color = kwargs.get('nx_box_edge_color', 'white')
         self.nx_font_size = kwargs.get('nx_font_size', 6) # Font Size
+        self.nx_density = kwargs.get('nx_density', 0.2)
 
         self.save_plt = kwargs.get('save_plt', False)
         self.fname_plt = kwargs.get('fname_plt', os.path.join(cfg.root, cfg.fdir_word_network, 'tmp_word_network.png'))
@@ -71,29 +73,37 @@ class WordNetwork:
 
     def __top_n(self, combs):
         sorted_items = sorted(combs.items(), key=lambda x:x[1], reverse=True)
-        sorted_combs = {}
-
-        words = []
-        for key, value in sorted_items:
-            words.extend(key.split('__'))
-            words = list(set(words))
-            if len(words) < self.top_n:
-                sorted_combs[key] = np.round(value, 3)
-                continue
-            else:
-                break
+        
+        if self.top_n:
+            sorted_combs = {}
+            words = []
+            for key, value in sorted_items:
+                words.extend(key.split('__'))
+                words = list(set(words))
+                if len(words) < self.top_n:
+                    sorted_combs[key] = np.round(value, 3)
+                    continue
+                else:
+                    break
+        else:
+            sorted_combs = {key: np.round(value, 3) for key, value in sorted_items}
         return sorted_combs
 
     def network(self):
         combs_df = pd.DataFrame(self.__top_n(self.combinations).items(), columns=['comb', 'count'])
         combs_dict = combs_df.set_index('comb').T.to_dict('records')
-        graph = nx.Graph()
+        fig, ax = plt.subplots(figsize=(self.fig_width, self.fig_height), dpi=self.fig_dpi)
+
+        if self.direction:
+            graph = nx.DiGraph()
+        else:
+            graph = nx.Graph()
+
         for key, value in combs_dict[0].items():
             w1, w2 = key.split('__')
             graph.add_edge(w1, w2, weight=(value*10))
-
-        fig, ax = plt.subplots(figsize=(self.fig_width, self.fig_height), dpi=self.fig_dpi)
-        pos = nx.spring_layout(graph, k=1)
+        
+        pos = nx.spring_layout(graph, k=self.nx_densit)
 
         nx.draw_networkx(
             graph, pos, 

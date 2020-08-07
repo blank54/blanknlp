@@ -156,7 +156,7 @@ class TextHandler:
 
         text = text.replace('\n', '  ')
         text = re.sub('\. ', '  ', text)
-        text = re.sub('\s+\s', '  ', text).strip()
+        text = re.sub('\s+\s', ' ', text).strip()
         return text
 
     def __separate_sentence(self, text):
@@ -206,18 +206,18 @@ class TextHandler:
             text_syno = re.sub(left, self.synonym_rule[left], text)
         return text_syno
 
-    def marking(self, sent):
-        if type(sent) != list:
-            sent = sent.split(' ')
+    def marking(self, words):
+        if type(words) != list:
+            words = words.split(' ')
 
-        for i, w in enumerate(sent):
+        for i, w in enumerate(words):
             if re.match('www.', str(w)):
-                sent[i] = 'LINK'
+                words[i] = 'LINK'
             elif re.search('\d+\d\.\d+', str(w)):
-                sent[i] = 'REF'
-            elif re.search('\d', str(w)):
-                sent[i] = 'NUM'
-        return sent
+                words[i] = 'REF'
+            elif re.match('\d', str(w)):
+                words[i] = 'NUM'
+        return words
 
     def cleaning(self, text):
         if not text:
@@ -226,16 +226,17 @@ class TextHandler:
         if self.do_lower:
             text = text.lower()
 
+        # EOS
+        sents = self.__separate_sentence(text)
+
         # Remove character
-        text = self.__remove_char(text)
+        text = '  '.join([self.__remove_char(sent) for sent in sents])
         
         # Synonym
         if self.do_synonym:
             text = self.synonym(text)
 
-        # EOS
-        sents = self.__separate_sentence(text)
-
+        
         # Marking
         if self.do_marking:
             sents = [' '.join(self.marking(sent)) for sent in sents]
@@ -295,6 +296,8 @@ class Ngrams:
         self.list = self.__counter2list()
         self.min_count = min_count
         self.n_range = n_range
+        self._from = self.n_range[0]
+        self._to = self.n_range[1]
 
         self.fname = kwargs.get('fname', '')
         self.note = kwargs.get('note', '')
@@ -320,10 +323,10 @@ class Ngrams:
                 already = True
             else:
                 if already == True:
-                    pass
+                    already = False
                 else:
                     ngrams.append(words[b])
-                already = False
+                    already = False
 
         return ngrams
 
@@ -355,14 +358,15 @@ class Tokenizer:
         return unigrams
 
     def tokenize_ngram(self, text, n_grams): # n_grams: Class "Ngrams"
-        unigrams = self.tokenize(text)
+        ngrams = self.tokenize(text)
         if not n_grams:
-            return unigrams
+            return ngrams
 
-        ngrams = []
-        for n in n_grams.n_range:
-            for ngram in n_grams.words2ngram(unigrams, n):
-                ngrams.append(ngram)
+        for n in range(n_grams._to, n_grams._from-1, -1):
+            _ngrams = []
+            for ngram in n_grams.words2ngram(ngrams, n):
+                _ngrams.append(ngram)
+            ngrams = _ngrams
         return ngrams
 
 
